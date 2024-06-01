@@ -29,15 +29,35 @@
       integrity="sha384-BY+fdrpOd3gfeRvTSMT+VUZmA728cfF9Z2G42xpaRkUGu2i3DyzpTURDo5A6CaLK"
       crossorigin="anonymous"
     />
+    <style>
+      /* Add your inline styles here */
+      .container1{
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        width: 70%;
+        height: 100vh;
+        
+        margin: 0 auto;
+      }
+
+      #list-box{
+        width: 100%;
+      }
+      #list-name{
+        font: 500;
+      }
+
+    </style>
     <title>Shopping List</title>
   </head>
   <body>
-    <div class="container">
-      <div class="row">
+    <div class="container1">
+      <div class="row" id="list-box">
         <div class="col s12">
           <div id="main" class="card">
             <div class="card-content">
-              <span class="card-title">Shopping List</span>
+              <span class="card-title" id="list-name">Shopping List</span>
               <div class="row">
                 <form id="list-form">
                   <div class="input-field col s12">
@@ -70,3 +90,4 @@
     <script src="script.js"></script>
   </body>
 </html>
+
