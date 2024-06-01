@@ -4,6 +4,9 @@ const clearBtn = document.querySelector(".clear-list");
 const filter = document.querySelector("#filter");
 const listInput = document.querySelector("#item");
 
+let isEditMode = false;
+let currentItem;
+
 // Load all events
 loadEventListeners();
 
@@ -12,6 +15,8 @@ function loadEventListeners() {
   form.addEventListener("submit", addItem);
   //   Remove item
   list.addEventListener("click", removeItem);
+  // Edit item
+  list.addEventListener("click", editItem);
   //   Clear list
   clearBtn.addEventListener("click", clearList);
   //   Filter list
@@ -24,23 +29,33 @@ function addItem(e) {
     alert("Add item to field");
   }
 
-  //   Create li
-  const li = document.createElement("li");
-  li.className = "collection-item";
-  li.appendChild(document.createTextNode(listInput.value));
+  if (isEditMode) {
+    currentItem.firstChild.textContent = listInput.value;
+    isEditMode = false;
+    listInput.value = "";
+    currentItem = null;
+  } else {
+    //   Create li
+    const li = document.createElement("li");
+    li.className = "collection-item";
+    li.appendChild(document.createTextNode(listInput.value));
 
-  const link = document.createElement("a");
-  link.className = "delete-item secondary-content";
+    const editLink = document.createElement("a");
+    editLink.className = "edit-item secondary-content";
+    editLink.innerHTML = '<i class="fa fa-edit"></i>';
+    li.appendChild(editLink);
 
-  link.innerHTML = '<i class="fa fa-remove"></i>';
-  li.appendChild(link);
+    const deleteLink = document.createElement("a");
+    deleteLink.className = "delete-item secondary-content";
+    deleteLink.innerHTML = '<i class="fa fa-remove"></i>';
+    li.appendChild(deleteLink);
 
-  //   console.log(li);
-  // Append li to ul
-  list.appendChild(li);
+    // Append li to ul
+    list.appendChild(li);
 
-  //   Clear inout
-  listInput.value = "";
+    //   Clear inout
+    listInput.value = "";
+  }
 
   e.preventDefault();
 }
@@ -51,6 +66,15 @@ function removeItem(e) {
     if (confirm("Are You Sure")) {
       e.target.parentElement.parentElement.remove();
     }
+  }
+}
+
+// Edit Item
+function editItem(e) {
+  if (e.target.parentElement.classList.contains("edit-item")) {
+    currentItem = e.target.parentElement.parentElement;
+    listInput.value = currentItem.firstChild.textContent;
+    isEditMode = true;
   }
 }
 
