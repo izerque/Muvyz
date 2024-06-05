@@ -18,10 +18,10 @@ body{
 }
 #title{
   text-align: center;
+  font: 900;
+  font-size:30px;
 }
-
 #registerbox{
-  border: 1px solid green;
   width: 100%;
   height: 100%;
   display: flex;
@@ -30,7 +30,6 @@ body{
 }
 #registerform{
   width: 80%;
-  border: 1px solid rgb(21, 66, 66);
  border-radius: 5px;
  margin-left: auto;
  margin-right: auto;
@@ -45,7 +44,7 @@ body{
 #registerImage{
   width: 60%;
   height: 100%;
-  border: 1px solid green;
+  
 }
 
 .registercontainer{
@@ -55,7 +54,7 @@ body{
  width:40%;
  height: 60%;
 
- border: 1px solid rgb(14, 20, 196);
+ 
  /* padding: 15px; */
 }
 input{
@@ -65,31 +64,31 @@ input{
 }
 button{
   width: 40%;
-  height: 35px;
-  margin: 5px 0px;
-  background-color: green;
+  padding: 10px;
+  margin: 5px opx;
+  background-color: rgb(7, 163, 174);
   border: none;
   border-radius: 5px;
-  color: #333;
+  color: #f3f3f3;
   align-self:center;
+  font: 500;
 }
-button:hover{
-  background-color: #333;
-  color:green;
-}  
+
     </style>
     <title>Register Page</title>
 </head>
 <body>
   <div id="registerbox">
-    <div id="registerImage"></div>
+    <div id="registerImage" style="background-image: url('./hanbags.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
     <div class="registercontainer">
       <div id="registerform">
-        <h1 id="title">Registration Form</h1>
+        <h1 id="title">Registrater</h1>
      <input type="text" id="username" placeholder="username">
      <input type="email" id="email" placeholder="email">
      <input type="password" id="password" placeholder="password">
-     <button type="submit" onclick="register()">Register</button>
+     <p style="text-align: center; color: #333;">already have an account <a href="login.html" style="font-weight: bold; color: rgb(7, 163, 174)">login</a></p>
+     <button type="submit" onclick="register()" style="cursor: pointer;">Register</button>
+     
       </div>
     </div>
   </div>
