@@ -7,55 +7,28 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
-
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
       integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm"
       crossorigin="anonymous"
     />
-
-    <!-- <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css"
-      integrity="sha384-BY+fdrpOd3gfeRvTSMT+VUZmA728cfF9Z2G42xpaRkUGu2i3DyzpTURDo5A6CaLK"
-      crossorigin="anonymous"
-    /> -->
-    <!-- <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-      integrity="sha384-ZakL3aAI1m3BhpeoixN8Kn9J5OV1lFjBTVelhl+V3nC3/O7KOt18hP3o/BvUtFgz"
-      crossorigin="anonymous"
-    /> -->
-    <!-- <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css"
-    /> -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css"
-      integrity="sha384-BY+fdrpOd3gfeRvTSMT+VUZmA728cfF9Z2G42xpaRkUGu2i3DyzpTURDo5A6CaLK"
-      crossorigin="anonymous"
-    />
     <style>
       /* Add your inline styles here */
-      .container1{
+      .container1 {
         justify-content: center;
         align-items: center;
         display: flex;
         width: 70%;
         height: 100vh;
-        
         margin: 0 auto;
       }
-
-      #list-box{
+      #list-box {
         width: 100%;
       }
-      #list-name{
-        font: 500;
+      #list-name {
+        font-weight: 500;
       }
-
     </style>
     <title>Shopping List</title>
   </head>
@@ -72,6 +45,14 @@
                     <input type="text" name="item" id="item" />
                     <label for="item">Add Item</label>
                   </div>
+                  <div class="input-field col s12">
+                    <input type="number" name="quantity" id="quantity" />
+                    <label for="quantity">Quantity</label>
+                  </div>
+                  <div class="input-field col s12">
+                    <input type="text" name="notes" id="notes" />
+                    <label for="notes">Notes</label>
+                  </div>
                   <input type="submit" value="Add Item" class="btn" />
                 </form>
               </div>
@@ -80,9 +61,9 @@
               <h5 id="list-title">List</h5>
               <div class="input-field col s12">
                 <input type="text" name="filter" id="filter" />
-                <label for="filter">Filter List </label>
+                <label for="filter">Filter List</label>
               </div>
-              <ul class="collection"></ul>
+              <ul id="itemsContainer" class="collection"></ul>
               <a href="#" class="clear-list btn black">Clear List</a>
             </div>
           </div>
@@ -98,4 +79,3 @@
     <script src="script.js"></script>
   </body>
 </html>
-
