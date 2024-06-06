@@ -100,7 +100,7 @@ button{
       // For example, you can use fetch API to send a POST request to your backend
       
       // Example fetch request
-      fetch('http://localhost:5000/login', {
+      fetch('http://localhost:5000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ button{
         if (response.ok) {
           // Handle successful login
           console.log('Login successful');
-          // window.location.href = 'home.html'; // Redirect to home page on successful login
+          window.location.href = 'index.html'; // Redirect to home page on successful login
         } else {
           // Handle failed login
           console.error('Login failed');

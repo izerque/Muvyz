@@ -103,7 +103,7 @@ button{
       // For example, you can use fetch API to send a POST request to your backend
       
       // Example fetch request
-      fetch('http://localhost:5000/register', {
+      fetch('http://localhost:5000/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ button{
         if (response.ok) {
           // Handle successful registration
           console.log('Registration successful');
-          // window.location.href = 'login.html'; // Redirect to login page on successful registration
+          window.location.href = 'login.html'; // Redirect to login page on successful registration
         } else {
           // Handle failed registration
           console.error('Registration failed');
