@@ -1,17 +1,17 @@
-const express = require('express');
-require('dotenv').config();
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const db = require('./models');
+const express = require("express");
+require("dotenv").config();
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const db = require("./models");
 // Import routes
-const itemRoutes = require('./routes/itemRoutes');
-const authRoutes = require('./routes/authRoutes');
+const itemRoutes = require("./routes/itemRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/api/items', itemRoutes);
-app.use('/auth', authRoutes);
+app.use("/api/items", itemRoutes);
+app.use("/auth", authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
