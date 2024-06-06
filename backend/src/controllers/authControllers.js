@@ -6,11 +6,11 @@ const { User } = require('../models');
 
     // Register user
   const registerUser = async  (req, res )=>{
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
 
     //comfirm if required fields are provided
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
         return res.status(400).json({ error: 'Name, email, and password are required' });
       }
 
@@ -65,8 +65,9 @@ const loginUser = async(req, res)=>{
         res.json({ token });
 
 
-    } catch (error){
-        res.status(500).json({error: error.message })
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
     }
 }
 
