@@ -36,7 +36,7 @@ async function getItems() {
       addItemToDOM(item);
     });
   } catch (error) {
-    console.error('Error fetching items:', error);
+    console.error("Error fetching items:", error);
   }
 }
 
@@ -44,9 +44,9 @@ async function getItems() {
 async function addItem(e) {
   e.preventDefault();
 
-  const itemInput = document.getElementById('item');
-  const quantityInput = document.getElementById('quantity');
-  const notesInput = document.getElementById('notes');
+  const itemInput = document.getElementById("item");
+  const quantityInput = document.getElementById("quantity");
+  const notesInput = document.getElementById("notes");
 
   if (itemInput.value === "") {
     alert("Add item to field");
@@ -56,7 +56,7 @@ async function addItem(e) {
   const newItem = {
     name: itemInput.value,
     quantity: parseInt(quantityInput.value, 10) || 0,
-    notes: notesInput.value || ""
+    notes: notesInput.value || "",
   };
 
   if (isEditMode) {
@@ -77,7 +77,7 @@ async function addItem(e) {
       notesInput.value = "";
       currentItem = null;
     } catch (error) {
-      console.error('Error updating item:', error);
+      console.error("Error updating item:", error);
     }
   } else {
     try {
@@ -97,59 +97,60 @@ async function addItem(e) {
       quantityInput.value = "";
       notesInput.value = "";
     } catch (error) {
-      console.error('Error adding item:', error);
+      console.error("Error adding item:", error);
     }
   }
 }
 
 //display item once added
 function addItemToDOM(item) {
-  const list = document.getElementById('itemsContainer');
+  const list = document.getElementById("itemsContainer");
 
   if (!list) {
-    console.error('List container not found');
+    console.error("List container not found");
     return;
   }
 
   if (!item || !item.name) {
-    console.error('Invalid item:', item);
+    console.error("Invalid item:", item);
     return;
   }
 
   const li = document.createElement("li");
   li.className = "collection-item";
 
-  const itemText = document.createTextNode(`${item.name} (Quantity: ${item.quantity || 0}) - Notes: ${item.notes || ''}`);
+  const itemText = document.createTextNode(
+    `${item.name} (Quantity: ${item.quantity || 0}) - Notes: ${item.notes || ""}`,
+  );
   li.appendChild(itemText);
 
   const editLink = document.createElement("a");
   editLink.className = "edit-item secondary-content";
   editLink.innerHTML = '<i class="fa fa-edit"></i>';
-  editLink.setAttribute('data-id', item.id);
+  editLink.setAttribute("data-id", item.id);
   li.appendChild(editLink);
 
   const deleteLink = document.createElement("a");
   deleteLink.className = "delete-item secondary-content";
   deleteLink.innerHTML = '<i class="fa fa-remove"></i>';
-  deleteLink.setAttribute('data-id', item.id);
+  deleteLink.setAttribute("data-id", item.id);
   li.appendChild(deleteLink);
 
   list.appendChild(li);
 }
 
-
 // Remove item
 async function removeItem(e) {
   if (e.target.parentElement.classList.contains("delete-item")) {
     if (confirm("Are You Sure")) {
-      const itemId = e.target.parentElement.getAttribute('data-id');
+      const itemId = e.target.parentElement.getAttribute("data-id");
       try {
         await fetch(`http://localhost:5000/api/items/${itemId}`, {
           method: "DELETE",
         });
         e.target.parentElement.parentElement.remove();
       } catch (error) {
-        console.error('Error deleting item:', error);
+        console.error("Error deleting item:", error);
       }
     }
   }
@@ -159,11 +160,11 @@ async function removeItem(e) {
 async function editItem(e) {
   if (e.target.parentElement.classList.contains("edit-item")) {
     const currentItem = e.target.parentElement.parentElement;
-    const itemId = e.target.parentElement.getAttribute('data-id');
+    const itemId = e.target.parentElement.getAttribute("data-id");
     const itemText = currentItem.firstChild.textContent.trim();
-    const [itemName, itemDetails] = itemText.split('(Quantity:');
-    const [itemQuantity, itemNotes] = itemDetails.split('- Notes:');
-    const list = document.getElementById('itemsContainer');
+    const [itemName, itemDetails] = itemText.split("(Quantity:");
+    const [itemQuantity, itemNotes] = itemDetails.split("- Notes:");
+    const list = document.getElementById("itemsContainer");
 
     currentItem.innerHTML = `
       <input type="text" id="edit-item-name" value="${itemName.trim()}">
@@ -172,12 +173,15 @@ async function editItem(e) {
       <button id="save-edit-btn">Save</button>
     `;
 
-    const saveEditBtn = currentItem.querySelector('#save-edit-btn');
-    saveEditBtn.addEventListener('click', async () => {
+    const saveEditBtn = currentItem.querySelector("#save-edit-btn");
+    saveEditBtn.addEventListener("click", async () => {
       const updatedItem = {
-        name: currentItem.querySelector('#edit-item-name').value.trim(),
-        quantity: parseInt(currentItem.querySelector('#edit-item-quantity').value.trim(), 10),
-        notes: currentItem.querySelector('#edit-item-notes').value.trim()
+        name: currentItem.querySelector("#edit-item-name").value.trim(),
+        quantity: parseInt(
+          currentItem.querySelector("#edit-item-quantity").value.trim(),
+          10,
+        ),
+        notes: currentItem.querySelector("#edit-item-notes").value.trim(),
       };
 
       try {
@@ -190,35 +194,35 @@ async function editItem(e) {
         });
 
         if (!res.ok) {
-          throw new Error('Failed to update item');
+          throw new Error("Failed to update item");
         }
 
         const item = await res.json();
 
         // Clear the currentItem and append the updated item information
-        currentItem.innerHTML = '';
-        const itemText = document.createTextNode(`${item.name} (Quantity: ${item.quantity || 0}) - Notes: ${item.notes || ''}`);
+        currentItem.innerHTML = "";
+        const itemText = document.createTextNode(
+          `${item.name} (Quantity: ${item.quantity || 0}) - Notes: ${item.notes || ""}`,
+        );
         currentItem.appendChild(itemText);
 
         const editLink = document.createElement("a");
         editLink.className = "edit-item secondary-content";
         editLink.innerHTML = '<i class="fa fa-edit"></i>';
-        editLink.setAttribute('data-id', item.id);
+        editLink.setAttribute("data-id", item.id);
         currentItem.appendChild(editLink);
 
         const deleteLink = document.createElement("a");
         deleteLink.className = "delete-item secondary-content";
         deleteLink.innerHTML = '<i class="fa fa-remove"></i>';
-        deleteLink.setAttribute('data-id', item.id);
+        deleteLink.setAttribute("data-id", item.id);
         currentItem.appendChild(deleteLink);
-
       } catch (error) {
-        console.error('Error updating item:', error);
+        console.error("Error updating item:", error);
       }
     });
   }
 }
-
 
 // Clear list
 async function clearList() {
