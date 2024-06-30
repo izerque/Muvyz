@@ -32,10 +32,6 @@ pool.connect((err, client, release) => {
     client.release();
 });
 
-// Basic route
-app.get('/', (req, res) => {
-    res.send('Welcome to the Movie Database API');
-});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

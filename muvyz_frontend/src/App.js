@@ -1,10 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
+import TopSection from './components/TopSection';
+import ListContainer from './components/listcontainer';
+
+
 
 function App() {
   return (
-    <div className="App text-white font-bold flex justify-center items-center ">
-      <h1 className="text-6xl font-movie">Muvys</h1>
+    <div className="App">
+      {/* <h1 className="text-6xl font-movie">Muvys</h1> */}
+      <TopSection />
+      <ListContainer />
+      
     </div>
   );
 }
