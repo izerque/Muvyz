@@ -1,26 +1,31 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const app = express();
 const muvyRoutes = require('./routes/muvyRoutes');
-app.use('/muvies', muvyRoutes);
-
-
 const { Pool } = require('pg');
+const app = express();
 const port = 5000;
 
-app.use(cors());
+// Configure CORS middleware
+app.use(cors({
+    origin: 'http://localhost:3000',  // The URL of your frontend application
+    methods: 'GET,POST,PUT,DELETE',   // Allowed HTTP methods
+    credentials: true,                 // Allow cookies to be sent with requests
+    allowedHeaders: 'Content-Type,Authorization',  // Allowed request headers
+}));
+
+// Configure body parser middleware
 app.use(bodyParser.json());
 
+// Use movie routes after CORS and body parser middleware
 app.use('/muvies', muvyRoutes);
-
 
 // Database connection
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
     database: 'muvy_db',
-    password: 'X12024',
+    password: 'password',
     port: 5432,
 });
 
@@ -31,7 +36,6 @@ pool.connect((err, client, release) => {
     console.log('Connected to PostgreSQL database');
     client.release();
 });
-
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

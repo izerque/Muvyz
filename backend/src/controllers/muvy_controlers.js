@@ -1,5 +1,5 @@
 const db = require("../models");
-const Muvy = db.Muvy; // This line was updated based on the instructions
+const Muvy = db.Muvy;
 
 // Add a new Muvy
 const addMuvy = async (req, res) => {
@@ -7,6 +7,7 @@ const addMuvy = async (req, res) => {
     const muvy = await Muvy.create(req.body);
     res.status(201).send(muvy);
   } catch (error) {
+    console.error('Error adding movie:', error.message);
     res.status(500).send({ message: error.message });
   }
 };
@@ -17,6 +18,7 @@ const getMuvies = async (req, res) => {
     const muvies = await Muvy.findAll();
     res.status(200).send(muvies);
   } catch (error) {
+    console.error('Error fetching movies:', error.message);
     res.status(500).send({ message: error.message });
   }
 };
@@ -31,6 +33,7 @@ const getMuvy = async (req, res) => {
       res.status(404).send({ message: "Muvy not found" });
     }
   } catch (error) {
+    console.error('Error fetching movie:', error.message);
     res.status(500).send({ message: error.message });
   }
 };
@@ -49,6 +52,7 @@ const updateMuvy = async (req, res) => {
       res.status(404).send({ message: "Muvy not found" });
     }
   } catch (error) {
+    console.error('Error updating movie:', error.message);
     res.status(500).send({ message: error.message });
   }
 };
@@ -66,6 +70,7 @@ const deleteMuvy = async (req, res) => {
       res.status(404).send({ message: "Muvy not found" });
     }
   } catch (error) {
+    console.error('Error deleting movie:', error.message);
     res.status(500).send({ message: error.message });
   }
 };
