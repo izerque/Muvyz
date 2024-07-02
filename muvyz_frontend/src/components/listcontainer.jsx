@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MovieCard from './MovieCard';
+import { MdOutlineSort } from "react-icons/md";
 
 const ListContainer = () => {
-  const [muvies, setMuvies] = useState([]); // State to store movies
-  const [showForm, setShowForm] = useState(false); // State to toggle form display
-  const [newMovie, setNewMovie] = useState({ title: '', year: '', rating: '', thumbnail: '' }); // State to store new movie data
-  const [searchQuery, setSearchQuery] = useState(''); // State for search input
-  const [searchResults, setSearchResults] = useState([]); // State for OMDb search results
-  const [selectedMovie, setSelectedMovie] = useState(null); // State for the selected movie data
+  const [muvies, setMuvies] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [newMovie, setNewMovie] = useState({ title: '', year: '', rating: '', thumbnail: '' });
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [sortOrder, setSortOrder] = useState('asc');
 
-  // Fetch movies from the backend
   useEffect(() => {
     const fetchMuvies = async () => {
       try {
@@ -25,13 +26,11 @@ const ListContainer = () => {
     fetchMuvies();
   }, []);
 
-  // Handle input change in the form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewMovie({ ...newMovie, [name]: value });
   };
 
-  // Handle form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -44,14 +43,12 @@ const ListContainer = () => {
       console.error('Error adding movie:', error);
     }
   };
-  
 
-  // Handle search query change
   const handleSearchChange = async (e) => {
     const query = e.target.value;
     setSearchQuery(query);
 
-    if (query.length > 2) {  // Only search if the query length is more than 2 characters
+    if (query.length > 2) {
       try {
         const response = await axios.get(`https://www.omdbapi.com/?s=${query}&apikey=1d5e0453`);
         setSearchResults(response.data.Search || []);
@@ -63,20 +60,18 @@ const ListContainer = () => {
     }
   };
 
-  // Handle movie selection from the search results
   const handleMovieSelect = async (movie) => {
     setSearchQuery(movie.Title);
     setSearchResults([]);
     setSelectedMovie(movie);
 
-    // Fetch detailed movie data
     try {
       const response = await axios.get(`https://www.omdbapi.com/?i=${movie.imdbID}&apikey=1d5e0453`);
       const data = response.data;
       setNewMovie({
         title: data.Title,
         year: data.Year,
-        rating: data.imdbRating || '',  // OMDb API provides rating in `imdbRating`
+        rating: data.imdbRating || '',
         thumbnail: data.Poster,
       });
     } catch (error) {
@@ -84,17 +79,45 @@ const ListContainer = () => {
     }
   };
 
+  const handleDeleteMovie = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/muvies/${id}`);
+      setMuvies((prevMuvies) => prevMuvies.filter((movie) => movie.id !== id));
+    } catch (error) {
+      console.error('Error deleting movie:', error);
+    }
+  };
+
+  const handleSort = () => {
+    const sortedMuvies = [...muvies].sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a.title.localeCompare(b.title);
+      } else {
+        return b.title.localeCompare(a.title);
+      }
+    });
+    setMuvies(sortedMuvies);
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
   return (
-    <div className='w-full p-4'>
+    <div className='w-9/12 mx-auto p-4'>
+     
       <div className='flex justify-between px-10'>
         <p className='text-gray-400 text-start'>Favourite Movies</p>
-        <button
-          className="bg-[#3a6ed6] text-white font-bold rounded-full w-[150px] h-[40px] border-none"
-          type="button"
-          onClick={() => setShowForm(!showForm)} // Toggle form display
-        >
-          + Add movie
-        </button>
+        <div className='flex w-[200px] justify-between items-center'>
+          <MdOutlineSort
+            className='text-gray-600 flex w-[30px] h-[30px] justify-between items-center cursor-pointer'
+            onClick={handleSort}
+          />
+          <button
+            className="bg-[#3a6ed6] text-white font-bold rounded-full w-[150px] h-[40px] border-none"
+            type="button"
+            onClick={() => setShowForm(!showForm)}
+          >
+            + Add movie
+          </button>
+        </div>
       </div>
 
       {showForm && (
@@ -108,18 +131,17 @@ const ListContainer = () => {
                 name='title'
                 value={searchQuery}
                 placeholder='Search for a movie'
-                onChange={handleSearchChange}  // Update search query
+                onChange={handleSearchChange}
                 className='mt-1 p-2 border rounded w-10/12 px-4 py-2 border-gray-300 text-white bg-gray-900'
                 required
               />
-              {/* Display search results */}
               {searchResults.length > 0 && (
-                <ul className='mt-2 bg-blue-400 border border-gray-600 rounded'>
+                <ul className='mt-2 bg-gray-800 border border-gray-600 rounded list-none'>
                   {searchResults.map((result) => (
                     <li
                       key={result.imdbID}
                       onClick={() => handleMovieSelect(result)}
-                      className='p-2 hover:bg-gray-700 cursor-pointer'
+                      className='p-2 mx-auto hover:bg-gray-700 border-b border-gray-6 cursor-pointer text-gray-400'
                     >
                       {result.Title} ({result.Year})
                     </li>
@@ -175,9 +197,9 @@ const ListContainer = () => {
         </div>
       )}
 
-      <div className="list-container" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-around" }}>
+      <div className="list-container flex gap-4 w-full mx-auto mt-10" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-around" }}>
         {muvies.map((muvy) => (
-          <MovieCard key={muvy.id} movie={muvy} />
+          <MovieCard key={muvy.id} movie={muvy} onDelete={handleDeleteMovie} />
         ))}
       </div>
     </div>

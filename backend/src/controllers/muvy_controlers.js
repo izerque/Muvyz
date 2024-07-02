@@ -1,10 +1,10 @@
 const db = require("../models");
-const Muvy = db.Muvy;
+const Muvy = require('../models/muvy');
 
 // Add a new Muvy
 const addMuvy = async (req, res) => {
   try {
-    const muvy = await Muvy.create(req.body);
+    const muvy = await Muvy.create({...req.body,rating:parseFloat(req.body.rating)});
     res.status(201).send(muvy);
   } catch (error) {
     console.error('Error adding movie:', error.message);

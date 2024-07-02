@@ -1,6 +1,6 @@
-// backend/src/models/muvy.js
 const { DataTypes } = require('sequelize');
 const db = require('../config/db');
+
 // Define the Muvy model with id, title, year, rating, and thumbnail attributes
 const Muvy = db.define('Muvy', {
     id: {
@@ -16,7 +16,7 @@ const Muvy = db.define('Muvy', {
         type: DataTypes.INTEGER
     },
     rating: {
-        type: DataTypes.INTEGER
+        type: DataTypes.FLOAT
     },
     thumbnail: {
         type: DataTypes.STRING
