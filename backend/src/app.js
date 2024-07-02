@@ -1,27 +1,31 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const app = express();
-const muvyRoutes = require('./routes/muvyRoutes');
-app.use('/muvies', muvyRoutes);
-
-
 const { Pool } = require('pg');
+const muvyRoutes = require('./routes/muvyRoutes');
+
+const app = express();
 const port = 5000;
 
-app.use(cors());
+// Configure CORS middleware
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+    allowedHeaders: 'Content-Type,Authorization',
+}));
+
+// Parse JSON bodies
 app.use(bodyParser.json());
-
-app.use('/muvies', muvyRoutes);
-
 
 // Database connection
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'muvy_db',
-    password: 'X12024',
-    port: 5432,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
 });
 
 pool.connect((err, client, release) => {
@@ -29,14 +33,13 @@ pool.connect((err, client, release) => {
         return console.error('Error acquiring client', err.stack);
     }
     console.log('Connected to PostgreSQL database');
-    client.release();
+    release();
 });
 
-// Basic route
-app.get('/', (req, res) => {
-    res.send('Welcome to the Movie Database API');
-});
+// Use muvy routes
+app.use('/muvies', muvyRoutes);
 
+// Start the server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
